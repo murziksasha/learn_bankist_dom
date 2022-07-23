@@ -90,4 +90,57 @@ document.addEventListener('DOMContentLoaded', () => {
   nav.addEventListener('mouseover', handleHover.bind(0.5));
 
   nav.addEventListener('mouseout', handleHover.bind(1));
+
+  //Sticky navigations
+
+  // window.addEventListener('scroll', e => {
+  //   const initalCoords = section1.getBoundingClientRect();
+
+  //   //info https://developer.mozilla.org/ru/docs/Web/API/Element/getBoundingClientRect
+  //   //about getBoundingClientRect(); menthod;
+
+  //   if (window.scrollY > initalCoords.top) {
+  //     nav.classList.add('sticky');
+  //   } else {
+  //     nav.classList.remove('sticky');
+  //   }
+  // });
+
+  //info intersection Observer API
+  //https://developer.mozilla.org/ru/docs/Web/API/Intersection_Observer_API
+
+  // const obsCallback = (entries, observer) => {
+  //   entries.forEach(entry => {
+  //     console.log(entry);
+  //   });
+  // };
+  // const obsOptions = {
+  //   root: null,
+  //   threshold: [0, 0.2],
+  // };
+
+  // const observer = new IntersectionObserver(obsCallback, obsOptions);
+  // observer.observe(section1);
+
+  //Second Good Variatn fo Sticky Menu implementation
+  const header = document.querySelector('.header');
+  const navHieght = nav.getBoundingClientRect().height;
+  console.log(navHieght); //90 (-90 чтоб сверзу от вью порта отступить)
+
+  const stickNav = entries => {
+    const [entry] = entries;
+    console.log(entry);
+
+    if (!entry.isIntersecting) {
+      nav.classList.add('sticky');
+    } else {
+      nav.classList.remove('sticky');
+    }
+  };
+  const headerObserver = new IntersectionObserver(stickNav, {
+    root: null,
+    threshold: 0,
+    rootMargin: `-${navHieght}spx`,
+  });
+  headerObserver.observe(header);
 });
