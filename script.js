@@ -106,22 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
   //   }
   // });
 
-  //info intersection Observer API
-  //https://developer.mozilla.org/ru/docs/Web/API/Intersection_Observer_API
-
-  // const obsCallback = (entries, observer) => {
-  //   entries.forEach(entry => {
-  //     console.log(entry);
-  //   });
-  // };
-  // const obsOptions = {
-  //   root: null,
-  //   threshold: [0, 0.2],
-  // };
-
-  // const observer = new IntersectionObserver(obsCallback, obsOptions);
-  // observer.observe(section1);
-
   //Second Good Variatn fo Sticky Menu implementation
   const header = document.querySelector('.header');
   const navHieght = nav.getBoundingClientRect().height;
@@ -140,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const headerObserver = new IntersectionObserver(stickNav, {
     root: null,
     threshold: 0,
-    rootMargin: `-${navHieght}spx`,
+    rootMargin: `-${navHieght}px`,
   });
   headerObserver.observe(header);
 });
