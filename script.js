@@ -181,4 +181,111 @@ document.addEventListener('DOMContentLoaded', () => {
   imgTargets.forEach(img => {
     imgObserver.observe(img);
   });
+
+  //slider
+
+  const slides = document.querySelectorAll('.slide');
+  const btnLeft = document.querySelector('.slider__btn--left');
+  const btnRight = document.querySelector('.slider__btn--right');
+
+  //начальное положение слайда
+  let curSlide = 0;
+
+  //максимальное значение слайдера
+  const maxSlide = slides.length - 1;
+
+  slides.forEach((slide, i) => {
+    slide.style.transform = `translateX(${100 * i}%)`;
+  });
+  //0% , 100%, 200%, 300%
+
+  //для удобства временно уменьшаем размеры элементов слайдера
+  // const slider = document.querySelector('.slider');
+  // slider.style.transform = `scale(0.5) translateX(-450px)`;
+  // slider.style.overflow = 'visible';
+
+  const goToSlide = slider => {
+    slides.forEach((slide, i) => {
+      slide.style.transform = `translateX(${100 * (i - slider)}%)`;
+    });
+  };
+
+  goToSlide(0);
+
+  const nextSlide = () => {
+    if (curSlide === maxSlide) {
+      curSlide = 0;
+    } else {
+      curSlide++;
+    }
+
+    goToSlide(curSlide);
+    acitvateDot(curSlide);
+  };
+
+  const prevSlide = () => {
+    if (curSlide === 0) {
+      curSlide = maxSlide;
+    } else {
+      curSlide--;
+    }
+
+    goToSlide(curSlide);
+    acitvateDot(curSlide);
+  };
+
+  //nest slide
+  btnRight.addEventListener('click', () => {
+    nextSlide();
+  });
+
+  btnLeft.addEventListener('click', () => {
+    prevSlide();
+  });
+
+  //implementation Left and Right arrowKeys
+  document.addEventListener('keydown', e => {
+    //console.log(e); //для того чтобы выясинть кодовое обозначение клавиши нажатой на клавиатуре
+    //ArrowLeft
+    //ArrowRight
+    if (e.key === `ArrowLeft`) {
+      prevSlide();
+    }
+    e.key === `ArrowRight` && nextSlide();
+  });
+
+  //implementation dots
+  const dotContainer = document.querySelector('.dots');
+  const createDots = () => {
+    slides.forEach((_, i) => {
+      dotContainer.insertAdjacentHTML(
+        'beforeend',
+        `<button class="dots__dot" data-slide="${i}"></button>`
+      );
+    });
+  };
+
+  createDots(); //вызваем функцию создаем точечки
+
+  dotContainer.addEventListener('click', e => {
+    if (e.target.classList.contains('dots__dot')) {
+      // const slide = e.target.dataset.slide;
+      //вариант с деструктуризаций
+      const { slide } = e.target.dataset;
+      goToSlide(slide);
+      acitvateDot(slide);
+    }
+  });
+
+  //функция актвиации дотов (что подсвечивалась точка)
+  function acitvateDot(slide) {
+    document.querySelectorAll('.dots__dot').forEach(dot => {
+      dot.classList.remove('dots__dot--active');
+    });
+
+    document
+      .querySelector(`.dots__dot[data-slide="${slide}"]`)
+      .classList.add('dots__dot--active');
+  }
+  acitvateDot(0);
 });
